@@ -35,12 +35,31 @@ public class Magpie
         {
             response = "Why so negative?";
         }
-        else if (statement.indexOf("mother") >= 0
+        else if (findWord("mother", "mother") >= 0
                 || statement.indexOf("father") >= 0
                 || statement.indexOf("sister") >= 0
                 || statement.indexOf("brother") >= 0)
         {
             response = "Tell me more about your family.";
+        }
+        else if (statement.indexOf("cat") >= 0
+                || statement.indexOf("dog") >= 0) {
+            response = "Tell me more about your pets";
+        }
+        else if (statement.indexOf("Nathan") >= 0) {
+            response = "He sounds like a good teacher";
+        }
+        else if (statement.trim().length() > 0) {
+            response = "Say something else please";
+        }
+        else if (statement.indexOf("sausage") >= 0) {
+            response = "I love sausage with my eggs";
+        }
+        else if (statement.indexOf("phone") >= 0) {
+            response = "technology is evil and will destroy mankind";
+        }
+        else if (statement.indexOf("parker") >= 0) {
+            response = "that kid is so weird";
         }
         else
         {
@@ -55,7 +74,7 @@ public class Magpie
      */
     public String getRandomResponse()
     {
-        final int NUMBER_OF_RESPONSES = 4;
+        final int NUMBER_OF_RESPONSES = 6;
         double r = Math.random();
         int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
         String response = "";
@@ -76,6 +95,12 @@ public class Magpie
         {
             response = "You don't say.";
         }
+        else if (whichResponse == 4) {
+            response = "Did I ask?";
+        }
+        else if (whichResponse == 5) {
+            response = "Do you know Candace?";
+        }
     
         return response;
     }
@@ -90,7 +115,15 @@ public class Magpie
     // The method returns the index of the first character in word
     // if it is found, and returns -1 otherwise. 
     public int findWord(String str, String word) {
-        return -1;
+        int index = str.indexOf(word);
+        if (index >= 0) {
+            if (str.charAt(index - 1) != ' ') {
+                return -1;
+            } else if (str.charAt(word.length() + 1) != ' ') {
+                return -1;
+            }
+        }
+        return index;
     }
 
     
@@ -104,7 +137,10 @@ public class Magpie
      */
     public String transformIWantStatement(String statement)
     {
-        //your code here
+        int x = statement.indexOf("I want", 0);
+        if(x >= 0) {
+
+        }
         return "";
     }
 
