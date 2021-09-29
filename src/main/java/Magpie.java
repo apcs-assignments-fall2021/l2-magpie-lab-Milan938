@@ -35,7 +35,7 @@ public class Magpie
         {
             response = "Why so negative?";
         }
-        else if (findWord("mother", "mother") >= 0
+        else if (findWord(statement, "mother") >= 0
                 || statement.indexOf("father") >= 0
                 || statement.indexOf("sister") >= 0
                 || statement.indexOf("brother") >= 0)
@@ -60,6 +60,9 @@ public class Magpie
         }
         else if (statement.indexOf("parker") >= 0) {
             response = "that kid is so weird";
+        }
+        else if (statement.indexOf("I want") >= 0) {
+            response = transformIWantStatement(statement);
         }
         else
         {
@@ -138,10 +141,9 @@ public class Magpie
     public String transformIWantStatement(String statement)
     {
         int x = statement.indexOf("I want", 0);
-        if(x >= 0) {
-
-        }
-        return "";
+        String want = statement.substring(x, statement.length());
+        String ans = "But do you reeeeaaaaallly want " + want + " ?";
+        return ans;
     }
 
     /**
