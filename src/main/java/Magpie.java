@@ -10,101 +10,86 @@
  * @author Laurie White
  * @version April 2012
  */
-public class Magpie
-{
+public class Magpie {
     /**
-     * Get a default greeting   
+     * Get a default greeting
+     *
      * @return a greeting
      */
-    public String getGreeting()
-    {
+    public String getGreeting() {
         return "Hello, let's talk.";
     }
-    
+
     /**
      * Gives a response to a user statement
-     * 
-     * @param statement
-     *            the user statement
+     *
+     * @param statement the user statement
      * @return a response based on the rules given
      */
-    public String getResponse(String statement)
-    {
+    public String getResponse(String statement) {
         String response = "";
-        if (statement.indexOf("no") >= 0)
-        {
+        if (statement.indexOf("no") >= 0) {
             response = "Why so negative?";
-        }
-        else if (findWord(statement, "mother") >= 0
+        } else if (findWord(statement, "mother") >= 0
                 || statement.indexOf("father") >= 0
                 || statement.indexOf("sister") >= 0
-                || statement.indexOf("brother") >= 0)
-        {
+                || statement.indexOf("brother") >= 0) {
             response = "Tell me more about your family.";
-        }
-        else if (statement.indexOf("cat") >= 0
+        } else if (statement.indexOf("cat") >= 0
                 || statement.indexOf("dog") >= 0) {
             response = "Tell me more about your pets";
-        }
-        else if (statement.indexOf("Nathan") >= 0) {
+        } else if (statement.indexOf("Nathan") >= 0) {
             response = "He sounds like a good teacher";
-        }
-        else if (statement.trim().length() > 0) {
+        } else if (statement.trim().length() == 0) {
             response = "Say something else please";
-        }
-        else if (statement.indexOf("sausage") >= 0) {
+        } else if (statement.indexOf("sausage") >= 0) {
             response = "I love sausage with my eggs";
-        }
-        else if (statement.indexOf("phone") >= 0) {
+        } else if (statement.indexOf("phone") >= 0) {
             response = "technology is evil and will destroy mankind";
-        }
-        else if (statement.indexOf("parker") >= 0) {
+        } else if (statement.indexOf("parker") >= 0) {
             response = "that kid is so weird";
-        }
-        else if (statement.indexOf("I want") >= 0) {
+        } else if (statement.indexOf("I want") >= 0) {
             response = transformIWantStatement(statement);
+        } else if (findWord(statement, "I") < findWord(statement, "you")) {
+            response = transformIYouStatement(statement);
         }
-        else
-        {
+        else if(statement.indexOf("I want to") >= 0) {
+            response = transformIWantToStatement(statement);
+        }
+        else if(findWord(statement, "you") < findWord(statement, "me")) {
+            response = transformYouMeStatement(statement);
+        }
+        else {
             response = getRandomResponse();
         }
         return response;
     }
-    
+
     /**
      * Pick a default response to use if nothing else fits.
+     *
      * @return a non-committal string
      */
-    public String getRandomResponse()
-    {
+    public String getRandomResponse() {
         final int NUMBER_OF_RESPONSES = 6;
         double r = Math.random();
-        int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
+        int whichResponse = (int) (r * NUMBER_OF_RESPONSES);
         String response = "";
-        
-        if (whichResponse == 0)
-        {
+
+        if (whichResponse == 0) {
             response = "Interesting, tell me more.";
-        }
-        else if (whichResponse == 1)
-        {
+        } else if (whichResponse == 1) {
             response = "Hmmm.";
-        }
-        else if (whichResponse == 2)
-        {
+        } else if (whichResponse == 2) {
             response = "Do you really think so?";
-        }
-        else if (whichResponse == 3)
-        {
+        } else if (whichResponse == 3) {
             response = "You don't say.";
-        }
-        else if (whichResponse == 4) {
+        } else if (whichResponse == 4) {
             response = "Did I ask?";
-        }
-        else if (whichResponse == 5) {
+        } else if (whichResponse == 5) {
             response = "Do you know Candace?";
         }
-    
+
         return response;
     }
 
@@ -118,18 +103,17 @@ public class Magpie
     // The method returns the index of the first character in word
     // if it is found, and returns -1 otherwise. 
     public int findWord(String str, String word) {
+        str = str.toLowerCase();
+        word = word.toLowerCase();
         int index = str.indexOf(word);
-        if (index >= 0) {
-            if (str.charAt(index - 1) != ' ') {
-                return -1;
-            } else if (str.charAt(word.length() + 1) != ' ') {
-                return -1;
-            }
+        if ( str.indexOf(word + " ") == 0 || str.indexOf(word) + word.length() == str.length() && str.indexOf(" " + word) >= 0 || str.indexOf(" " + word + " ") >= 0) {
+            return index;
+        } else {
+            return -1;
         }
-        return index;
     }
 
-    
+
     // We will work on the following methods later!
 
     /**
@@ -140,9 +124,8 @@ public class Magpie
      */
     public String transformIWantStatement(String statement)
     {
-        int x = statement.indexOf("I want", 0);
-        String want = statement.substring(x, statement.length());
-        String ans = "But do you reeeeaaaaallly want " + want + " ?";
+        String want = statement.substring(6, statement.length());
+        String ans = "Would you really be happy if you had" + want + "?";
         return ans;
     }
 
@@ -154,8 +137,9 @@ public class Magpie
      */
     public String transformIYouStatement(String statement)
     {
-        //your code here
-        return "";
+        String want = statement.substring(2, findWord(statement, "you"));
+        String ans = "Why do you " + want + "me?";
+        return ans;
     }
 
     /**
@@ -166,8 +150,9 @@ public class Magpie
      */
     public String transformIWantToStatement(String statement)
     {
-        // your code here
-        return "";
+        String word = statement.substring(9, statement.length());
+        String ans = "What would it mean to" + word + "?";
+        return ans;
     }
 
 
@@ -181,7 +166,8 @@ public class Magpie
      */
     public String transformYouMeStatement(String statement)
     {
-        // your code here
-        return "";
+        String word = statement.substring(7, findWord(statement, "me"));
+        String ans = "What makes you think that I " + word + "you?";
+        return ans;
     }
 }
